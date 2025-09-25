@@ -1,0 +1,23 @@
+﻿<Window x:Class="AzurePartnerLinkerGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="pmOne - Azure Partner Linker" 
+        Height="580" Width="450" 
+        MinHeight="580" MinWidth="480"
+        MaxHeight="580" MaxWidth="480">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Azure Partner Linker"
+                   FontSize="24" FontWeight="Bold"
+                   HorizontalAlignment="Center" Margin="0,10,0,10"/>
+
+        <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <ListBox Grid.Row="2" Margin="5,10,5,5" x:Name="LogListBox"></ListBox>
+    </Grid>
+</Window>
