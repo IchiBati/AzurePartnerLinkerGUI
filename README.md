@@ -1,3 +1,5 @@
+![Azure](https://img.shields.io/badge/Azure-ManagementPartner-blue?logo=microsoft-azure)
+
 # Azure Partner Linker GUI
 
 Dieses Projekt ist eine Desktop-Anwendung zur Verwaltung von Partner Admin Links (PAL) in Microsoft Azure. Die Anwendung ermöglicht die Authentifizierung mit Azure, das Abrufen und Verwalten von Partnerinformationen sowie das Verknüpfen, Aktualisieren und Löschen von PALs.
