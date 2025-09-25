@@ -5,7 +5,7 @@ using System.Windows;
 namespace AzurePartnerLinkerGUI;
 
 /// <summary>
-/// Interaction logic for App.xaml
+/// Enthält die Interaktionslogik für App.xaml.
 /// </summary>
 public partial class App : Application
 {

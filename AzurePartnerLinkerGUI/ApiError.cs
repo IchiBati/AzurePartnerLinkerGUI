@@ -3,16 +3,16 @@ using System.Text.Json.Serialization;
 namespace AzurePartnerLinkerGUI
 {
     /// <summary>
-    /// Represents the structure of a standard error response from the Azure API.
+    /// Stellt die Struktur einer Standard-Fehlerantwort der Azure-API dar.
     /// </summary>
     public record ApiErrorResponse
     {
         [JsonPropertyName("error")]
         public ApiError? Error { get; set; }
     }
-    
+
     /// <summary>
-    /// Represents the inner 'error' object with code and message.
+    /// Stellt das innere 'error'-Objekt mit Code und Nachricht dar.
     /// </summary>
     public record ApiError
     {

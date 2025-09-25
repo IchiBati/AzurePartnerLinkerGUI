@@ -11,7 +11,7 @@ using Azure.Identity;
 namespace AzurePartnerLinkerGUI
 {
     /// <summary>
-    /// A dedicated, robust client for handling Partner Admin Link (PAL) operations.
+    /// Ein robuster Client, der sich um die Partner Admin Link (PAL) Operationen kümmert.
     /// </summary>
     public class PartnerManagementClient
     {
@@ -28,9 +28,9 @@ namespace AzurePartnerLinkerGUI
         }
 
         /// <summary>
-        /// Retrieves the full PAL information object.
+        /// Holt die vollständigen PAL-Informationen.
         /// </summary>
-        /// <returns>A PartnerInfo object on success; otherwise, null.</returns>
+        /// <returns>Ein PartnerInfo-Objekt bei Erfolg, sonst null.</returns>
         public async Task<PartnerInfo?> GetPartnerInfoAsync()
         {
             var response = await SendRequestAsync(HttpMethod.Get, $"{BaseUrl}?api-version={ApiVersion}");
@@ -40,24 +40,24 @@ namespace AzurePartnerLinkerGUI
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 var apiResponse = JsonSerializer.Deserialize<PartnerApiResponse>(jsonResponse);
-                //_logger.Log($"Found existing PAL: {apiResponse?.Properties?.PartnerId} ({apiResponse?.Properties?.PartnerName})");
+                // _logger.Log($"Gefundener PAL: {apiResponse?.Properties?.PartnerId} ({apiResponse?.Properties?.PartnerName})");
                 return apiResponse?.Properties;
             }
 
-            // If not found, it's not an error, just means no link exists.
+            // Wenn nicht gefunden, ist das kein Fehler, sondern bedeutet nur, dass kein Link existiert.
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                //_logger.Log("No existing PAL link found.");
+                // _logger.Log("Kein bestehender PAL-Link gefunden.");
                 return null;
             }
-            
-            // For all other failures, use the universal error handler.
+
+            // Für alle anderen Fehler den allgemeinen Fehlerhandler verwenden.
             await HandleFailedResponseAsync(response);
             return null;
         }
 
         /// <summary>
-        /// Creates or updates the Partner Admin Link.
+        /// Erstellt oder aktualisiert den Partner Admin Link.
         /// </summary>
         public async Task<bool> LinkOrUpdatePalAsync(string partnerId)
         {
@@ -68,26 +68,29 @@ namespace AzurePartnerLinkerGUI
 
             if (response?.IsSuccessStatusCode ?? false)
             {
-                _logger.Log($"Successfully linked/updated PAL for Partner ID: {partnerId}");
+                _logger.Log($"PAL erfolgreich verknüpft/aktualisiert für Partner-ID: {partnerId}");
                 return true;
             }
 
             await HandleFailedResponseAsync(response);
             return false;
         }
-        
+
+        /// <summary>
+        /// Aktualisiert den PAL mit PATCH.
+        /// </summary>
         public async Task<bool> PatchPalAsync(string partnerId)
         {
             if (string.IsNullOrWhiteSpace(partnerId)) return false;
 
             string url = $"{BaseUrl}/{partnerId}?api-version={ApiVersion}";
             // Für PATCH verwenden wir HttpMethod.Patch. Der Body ist laut API-Dokumentation oft derselbe.
-            var content = new StringContent("{}", Encoding.UTF8, "application/json"); 
+            var content = new StringContent("{}", Encoding.UTF8, "application/json");
             var response = await SendRequestAsync(new HttpMethod("PATCH"), url, content);
 
             if (response?.IsSuccessStatusCode ?? false)
             {
-                _logger.Log($"Successfully updated PAL for Partner ID: {partnerId}");
+                _logger.Log($"PAL erfolgreich aktualisiert für Partner-ID: {partnerId}");
                 return true;
             }
 
@@ -95,19 +98,18 @@ namespace AzurePartnerLinkerGUI
             return false;
         }
 
-
         /// <summary>
-        /// Deletes the Partner Admin Link.
+        /// Löscht den Partner Admin Link.
         /// </summary>
         public async Task<bool> DeletePalAsync(string partnerId)
         {
             if (string.IsNullOrWhiteSpace(partnerId)) return false;
             string url = $"{BaseUrl}/{partnerId}?api-version={ApiVersion}";
             var response = await SendRequestAsync(HttpMethod.Delete, url);
-            
+
             if (response?.IsSuccessStatusCode ?? false)
             {
-                _logger.Log($"Successfully deleted PAL link for Partner ID: {partnerId}");
+                _logger.Log($"PAL-Link erfolgreich gelöscht für Partner-ID: {partnerId}");
                 return true;
             }
 
@@ -116,14 +118,14 @@ namespace AzurePartnerLinkerGUI
         }
 
         /// <summary>
-        /// A centralized, universal handler for all failed API responses.
-        /// It parses the standard error JSON and shows a user-friendly message.
+        /// Zentraler Fehlerhandler für alle fehlgeschlagenen API-Antworten.
+        /// Er liest die Standard-Fehler-JSON und zeigt eine verständliche Meldung an.
         /// </summary>
         private async Task HandleFailedResponseAsync(HttpResponseMessage? response)
         {
             if (response == null)
             {
-                _logger.Log("Operation failed: No response from server.");
+                _logger.Log("Operation fehlgeschlagen: Keine Antwort vom Server.");
                 return;
             }
 
@@ -139,10 +141,10 @@ namespace AzurePartnerLinkerGUI
             }
             catch
             {
-                // If parsing the error fails, we use the generic message.
+                // Falls das Parsen des Fehlers fehlschlägt, verwenden wir die generische Meldung.
             }
-            
-            _logger.Log($"API Error: {errorMessage}");
+
+            _logger.Log($"API-Fehler: {errorMessage}");
         }
 
         private async Task<HttpResponseMessage?> SendRequestAsync(HttpMethod method, string url, HttpContent? content = null)
@@ -159,7 +161,7 @@ namespace AzurePartnerLinkerGUI
             }
             catch (Exception ex)
             {
-                _logger.Log($"API request to '{method} {url}' failed: {ex.Message}");
+                _logger.Log($"API-Anfrage '{method} {url}' fehlgeschlagen: {ex.Message}");
                 return null;
             }
         }
@@ -175,4 +177,3 @@ namespace AzurePartnerLinkerGUI
         }
     }
 }
-
