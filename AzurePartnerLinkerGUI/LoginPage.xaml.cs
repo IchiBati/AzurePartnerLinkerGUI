@@ -80,15 +80,11 @@ namespace AzurePartnerLinkerGUI
                 // bearer holen! 
                 var tokenRequestContext = new TokenRequestContext(new[] { "https://management.azure.com/.default" });
                 AccessToken token = await credential.GetTokenAsync(tokenRequestContext);
-                Console.WriteLine(token.Token);
+                
 
 
 
-                //PartnerResponseResource partnerResource = await client.GetPartnerResponseResource(new ResourceIdentifier($"/providers/Microsoft.ManagementPartner/partners/{PartnerIdBox.Text}")).GetAsync();
-                //string? partnerId = partnerResource.Data.PartnerId;
-                //_logger.Log($"Existing PAL found for Partner ID: {partnerId}");
-
-                //await partnerResource.CreateOrUpdateAsync();
+                
 
             }
             catch (Exception ex)
